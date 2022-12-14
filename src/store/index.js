@@ -1,11 +1,14 @@
-import { createStore } from 'redux';
+import { createStore, combineReducers } from 'redux';
 import { composeWithDevTools } from '@redux-devtools/extension';
-import reducer from './reducers';
+//import  {auth, tweets } from './reducers';
+
+import * as reducers from './reducers';
+
+//const reducer = combineReducers( {auth, tweets });
+const reducer = combineReducers(reducers);
 
 export default function configureStore () {
     const store = createStore(reducer,  composeWithDevTools());
-
-     
 
     return store;
 };
