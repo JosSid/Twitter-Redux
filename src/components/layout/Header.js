@@ -1,7 +1,7 @@
 import { Link, NavLink } from 'react-router-dom';
 import classNames from 'classnames';
 import Button from '../common/Button';
-
+// eslint-disable-next-line
 import logo, { ReactComponent as Icon } from '../../assets/twitter.svg';
 
 import './Header.css';

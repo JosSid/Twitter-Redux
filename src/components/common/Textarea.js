@@ -1,5 +1,5 @@
 import classNames from 'classnames';
-import { forwardRef, useEffect, useRef } from 'react';
+import { forwardRef } from 'react';
 
 import './Textarea.css';
 
