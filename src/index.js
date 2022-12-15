@@ -14,7 +14,7 @@ import configureStore from './store';
 const accessToken = storage.get('auth');
 setAuthorizationHeader(accessToken);
 
-const store = configureStore();
+const store = configureStore({ auth: !!accessToken });
 
 const root = ReactDOM.createRoot(document.getElementById('root'));
 root.render(
