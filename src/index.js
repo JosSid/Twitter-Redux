@@ -1,6 +1,5 @@
 import React from 'react';
 import ReactDOM from 'react-dom/client';
-import { BrowserRouter as Router } from 'react-router-dom';
 
 import './index.css';
 import App from './App';
@@ -10,6 +9,7 @@ import { AuthContextProvider } from './components/auth/context';
 
 //import './store-poc';
 import configureStore from './store';
+import Root from './Root';
 
 const accessToken = storage.get('auth');
 setAuthorizationHeader(accessToken);
@@ -19,10 +19,10 @@ const store = configureStore({ auth: !!accessToken });
 const root = ReactDOM.createRoot(document.getElementById('root'));
 root.render(
   <React.StrictMode>
-    <Router>
+    <Root store={store}>
       <AuthContextProvider isInitiallyLogged={!!accessToken}>
         <App />
       </AuthContextProvider>
-    </Router>
-  </React.StrictMode>,
+    </Root>
+  </React.StrictMode>
 );
