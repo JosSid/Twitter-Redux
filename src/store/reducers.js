@@ -7,7 +7,7 @@
 //    }
 // }
 
-import { AUTH_LOGIN_FAILURE, AUTH_LOGIN_REQUEST, AUTH_LOGIN_SUCCES, AUTH_LOGOUT, TWEETS_LOADED, UI_RESET_ERROR } from './types';
+import {  AUTH_LOGIN_REQUEST, AUTH_LOGIN_SUCCES, AUTH_LOGOUT, TWEETS_LOADED, UI_RESET_ERROR } from './types';
 
 const defaultState = {
   auth: false,
@@ -50,30 +50,33 @@ export function tweets(state = defaultState.tweets, action) {
 };
 
 export function ui(state = defaultState.ui, action){
-  switch(action.type) {
-    case AUTH_LOGIN_REQUEST:
-      return {
-        error: null,
-        isLoading: true
-      };
-    case AUTH_LOGIN_SUCCES:
-      return {
-        error: null,
-        isLoading: false
-      };
-    case AUTH_LOGIN_FAILURE: 
+  if(action.error){
     return {
       isLoading: false,
       error: action.payload
     };
-    case UI_RESET_ERROR:
-      return {
-        ...state,
-        error: null
-      }
-      default:
-        return state;
   };
+  if(/_REQUEST$/.test(action.type)){
+    return {
+      error: null,
+      isLoading: true
+    };
+  };
+  if(/_SUCCES$/.test(action.type)){
+    return {
+      error: null,
+      isLoading: false
+    };
+  }
+  if(action.type === UI_RESET_ERROR) {
+    return {
+      ...state,
+      error: null
+    }
+  }
+
+  return state;
+
 };
 
 // export default function reducer(state = defaultState, action) {

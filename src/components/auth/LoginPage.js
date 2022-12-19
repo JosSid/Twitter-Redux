@@ -6,7 +6,7 @@ import { login } from './service';
 
 import './LoginPage.css';
 import { useDispatch, useSelector } from 'react-redux';
-import { authLoginFailure, authLoginRequest, authLoginSucces, uiResetError } from '../../store/actions'
+import { authLogin, authLoginFailure, authLoginRequest, authLoginSucces, uiResetError } from '../../store/actions'
 import { getUi } from '../../store/selectors';
 
 const LoginPage = () => {
@@ -24,23 +24,14 @@ const LoginPage = () => {
   const handleSubmit = async event => {
     event.preventDefault();
 
-    dispatch(authLoginRequest());
-    try {
-      await login({ username, password });
-      dispatch(authLoginSucces());
-      const to = location.state?.from?.pathname || '/';
+   dispatch(authLogin({username, password})).then(() => {
+    const to = location.state?.from?.pathname || '/';
 
-      // const to =
-      //   (location.state &&
-      //     location.state.from &&
-      //     location.state.from.pathname) ||
-      //   '/';
+    navigate(to, { replace: true });
+   });
 
-      navigate(to, { replace: true });
-    } catch (error) {
-      dispatch(authLoginFailure(error));
-    }
-  };
+  } 
+
 
   console.log('render ');
   const isButtonEnabled = useMemo(() => {
