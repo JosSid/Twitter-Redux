@@ -5,30 +5,29 @@ import FormField from '../common/FormField';
 import { login } from './service';
 
 import './LoginPage.css';
-import { useDispatch } from 'react-redux';
-import { authLogin } from '../../store/actions'
+import { useDispatch, useSelector } from 'react-redux';
+import { authLoginFailure, authLoginRequest, authLoginSucces, uiResetError } from '../../store/actions'
+import { getUi } from '../../store/selectors';
 
 const LoginPage = () => {
   const [username, setUsername] = useState('');
   const [password, setPassword] = useState('');
-  const [error, setError] = useState(null);
-  const [isFetching, setIsFetching] = useState(false);
   const location = useLocation();
   const navigate = useNavigate();
   const dispatch = useDispatch();
+  const { isLoading, error } = useSelector(getUi);
 
   const handleChangeUsername = event => setUsername(event.target.value);
   const handleChangePassword = event => setPassword(event.target.value);
-  const resetError = () => setError(null);
+  const handleResetError = () => dispatch(uiResetError())
 
   const handleSubmit = async event => {
     event.preventDefault();
 
+    dispatch(authLoginRequest());
     try {
-      resetError();
-      setIsFetching(true);
       await login({ username, password });
-      dispatch(authLogin());
+      dispatch(authLoginSucces());
       const to = location.state?.from?.pathname || '/';
 
       // const to =
@@ -39,16 +38,15 @@ const LoginPage = () => {
 
       navigate(to, { replace: true });
     } catch (error) {
-      setError(error);
-      setIsFetching(false);
+      dispatch(authLoginFailure(error));
     }
   };
 
   console.log('render ');
   const isButtonEnabled = useMemo(() => {
     console.log('calculating');
-    return username && password && !isFetching;
-  }, [username, password, isFetching]);
+    return username && password && !isLoading;
+  }, [username, password, isLoading]);
 
   return (
     <div className="loginPage">
@@ -99,7 +97,7 @@ const LoginPage = () => {
         </select> */}
       </form>
       {error && (
-        <div onClick={resetError} className="loginPage-error">
+        <div onClick={handleResetError} className="loginPage-error">
           {error.message}
         </div>
       )}
