@@ -1,7 +1,11 @@
 import { Navigate, useLocation } from 'react-router-dom';
-import { AuthContextConsumer } from './context';
+import { useSelector } from 'react-redux';
+import { getIsLogged } from '../../store/selectors';
 
-export const RequireAuth = ({ isLogged, children }) => {
+export const RequireAuth = ({ children }) => {
+
+  const isLogged = useSelector(getIsLogged);
+
   const location = useLocation();
   if (!isLogged) {
     return <Navigate to="/login" state={{ from: location }} />;
@@ -9,12 +13,4 @@ export const RequireAuth = ({ isLogged, children }) => {
   return children;
 };
 
-const ConnectedRequireAuth = props => {
-  return (
-    <AuthContextConsumer>
-      {value => <RequireAuth {...props} isLogged={value.isLogged} />}
-    </AuthContextConsumer>
-  );
-};
-
-export default ConnectedRequireAuth;
+export default RequireAuth;

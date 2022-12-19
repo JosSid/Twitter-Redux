@@ -2,10 +2,11 @@ import { useMemo, useState } from 'react';
 import { useLocation, useNavigate } from 'react-router-dom';
 import Button from '../common/Button';
 import FormField from '../common/FormField';
-import { useAuth } from './context';
 import { login } from './service';
 
 import './LoginPage.css';
+import { useDispatch } from 'react-redux';
+import { authLogin } from '../../store/actions'
 
 const LoginPage = () => {
   const [username, setUsername] = useState('');
@@ -14,7 +15,7 @@ const LoginPage = () => {
   const [isFetching, setIsFetching] = useState(false);
   const location = useLocation();
   const navigate = useNavigate();
-  const { handleLogin } = useAuth();
+  const dispatch = useDispatch();
 
   const handleChangeUsername = event => setUsername(event.target.value);
   const handleChangePassword = event => setPassword(event.target.value);
@@ -27,7 +28,7 @@ const LoginPage = () => {
       resetError();
       setIsFetching(true);
       await login({ username, password });
-      handleLogin();
+      dispatch(authLogin());
       const to = location.state?.from?.pathname || '/';
 
       // const to =

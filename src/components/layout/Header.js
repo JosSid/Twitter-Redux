@@ -1,19 +1,22 @@
 import { Link, NavLink } from 'react-router-dom';
 import classNames from 'classnames';
 import Button from '../common/Button';
-// eslint-disable-next-line
-import logo, { ReactComponent as Icon } from '../../assets/twitter.svg';
+import { ReactComponent as Icon } from '../../assets/twitter.svg';
 
 import './Header.css';
 import { logout } from '../auth/service';
-import { useAuth } from '../auth/context';
+
+import { useDispatch, useSelector } from 'react-redux';
+import { getIsLogged } from '../../store/selectors';
+import { authLogout } from '../../store/actions';
 
 const Header = ({ className }) => {
-  const { isLogged, handleLogout } = useAuth();
+  const isLogged = useSelector(getIsLogged)
+  const dispatch = useDispatch();
 
   const handleLogoutClick = async () => {
     await logout();
-    handleLogout();
+    dispatch(authLogout());
   };
 
   return (
