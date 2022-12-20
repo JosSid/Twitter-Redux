@@ -1,4 +1,3 @@
-import { login } from "../components/auth/service";
 import { AUTH_LOGIN_FAILURE, AUTH_LOGIN_REQUEST, AUTH_LOGIN_SUCCES, AUTH_LOGOUT, TWEETS_LOADED, UI_RESET_ERROR } from "./types";
 
 export const authLoginRequest = () => ({
@@ -16,10 +15,10 @@ export const authLoginFailure = (error) => ({
 });
 
 export const authLogin = (credentials) => {
-    return async function(dispatch, getState) {
+    return async function(dispatch, getState, {api}) {
         try {
             dispatch(authLoginRequest());
-            await login(credentials);
+            await api.auth.login(credentials);
             dispatch(authLoginSucces());
         } catch (error) {
             dispatch(authLoginFailure(error));

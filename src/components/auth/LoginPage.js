@@ -2,11 +2,11 @@ import { useMemo, useState } from 'react';
 import { useLocation, useNavigate } from 'react-router-dom';
 import Button from '../common/Button';
 import FormField from '../common/FormField';
-import { login } from './service';
+
 
 import './LoginPage.css';
 import { useDispatch, useSelector } from 'react-redux';
-import { authLogin, authLoginFailure, authLoginRequest, authLoginSucces, uiResetError } from '../../store/actions'
+import { authLogin, uiResetError } from '../../store/actions'
 import { getUi } from '../../store/selectors';
 
 const LoginPage = () => {
