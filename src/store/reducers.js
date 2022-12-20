@@ -7,7 +7,7 @@
 //    }
 // }
 
-import { AUTH_LOGIN_SUCCES, AUTH_LOGOUT, TWEETS_LOADED_SUCCES, UI_RESET_ERROR } from './types';
+import { AUTH_LOGIN_SUCCES, AUTH_LOGOUT, TWEETS_LOADED_SUCCES, TWEET_LOADED_SUCCES, UI_RESET_ERROR } from './types';
 
 const defaultState = {
   auth: false,
@@ -49,6 +49,9 @@ export function tweets(state = defaultState.tweets, action) {
     if(action.type === TWEETS_LOADED_SUCCES) {
         return { areLoaded: true, data: action.payload };
     };
+    if(action.type === TWEET_LOADED_SUCCES) {
+      return { ...state, data: [...state.data, action.payload] }
+    }
     return state;
 };
 

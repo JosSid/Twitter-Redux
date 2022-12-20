@@ -8,7 +8,7 @@ export const getLatestTweets = () => {
 };
 
 export const getTweetDetail = tweetId => {
-  const url = `${tweetsUrl}/${tweetId}`;
+  const url = `${tweetsUrl}/${tweetId}?_expand=user&_embed=likes`;
   return client.get(url);
 };
 
