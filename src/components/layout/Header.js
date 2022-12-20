@@ -4,7 +4,6 @@ import Button from '../common/Button';
 import { ReactComponent as Icon } from '../../assets/twitter.svg';
 
 import './Header.css';
-import { logout } from '../auth/service';
 
 import { useDispatch, useSelector } from 'react-redux';
 import { getIsLogged } from '../../store/selectors';
@@ -15,7 +14,6 @@ const Header = ({ className }) => {
   const dispatch = useDispatch();
 
   const handleLogoutClick = async () => {
-    await logout();
     dispatch(authLogout());
   };
 

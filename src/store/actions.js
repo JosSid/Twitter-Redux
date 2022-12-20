@@ -28,9 +28,16 @@ export const authLogin = (credentials) => {
     };
 };
 
-export const authLogout = () => ({
+export const authLogoutSucces = () => ({
     type: AUTH_LOGOUT
 });
+
+export const authLogout = () => {
+    return async function(dispatch, getState, { api }) {
+        await api.auth.logout();
+        dispatch(authLogoutSucces())
+    }
+};
 
 export const tweetsLoadedRequest = () => ({
     type: TWEETS_LOADED_REQUEST
