@@ -2,18 +2,19 @@ import Page from '../layout/Page';
 import Photo from '../common/Photo';
 import Textarea from '../common/Textarea';
 import Button from '../common/Button';
-
+import { getUi } from '../../store/selectors';
 import './NewTweetPage.css';
 import { useEffect, useRef, useState } from 'react';
 import { useNavigate } from 'react-router-dom';
-import { useDispatch } from 'react-redux';
+import { useDispatch, useSelector } from 'react-redux';
 import { tweetCreate } from '../../store/actions';
 
 const MAX_CHARACTERS = 280;
 const MIN_CHARACTERS = 5;
 
 const NewTweetPage = () => {
-  const dispatch = useDispatch()
+  const dispatch = useDispatch();
+  const { isLoading } = useSelector(getUi)
   const [content, setContent] = useState('');
   const navigate = useNavigate();
   const textareaRef = useRef();
@@ -44,7 +45,7 @@ const NewTweetPage = () => {
   };
 
   const characters = `${content.length} / ${MAX_CHARACTERS}`;
-  const buttonEnabled = content.length >= MIN_CHARACTERS;
+  const buttonEnabled = content.length >= MIN_CHARACTERS && !isLoading;
 
   return (
     <Page title="What are you thinking...">
