@@ -2,8 +2,8 @@ import { useEffect } from 'react';
 
 import { Link } from 'react-router-dom';
 
-import {tweetsLoaded} from '../../store/actions'
-import { getLatestTweets } from './service';
+import {tweetsLoad} from '../../store/actions'
+
 import classNames from 'classnames';
 
 import Tweet from './Tweet';
@@ -41,11 +41,9 @@ const EmptyList = () => (
 
 const TweetsPage = ({onTweetsLoaded, tweets, ...props}) => {
   useEffect(() => {
-    const execute = async () => {
-      const tweets = await getLatestTweets();
-      onTweetsLoaded(tweets);
-    };
-    execute();
+   
+      onTweetsLoaded();
+    
     // getLatestTweets().then(tweets => {
     //   setTweets(tweets);
     // });
@@ -85,7 +83,7 @@ const mapStateToProps = (state, ownProps) =>({
 // });
 
 const mapDispatchToProps = {
-  onTweetsLoaded: tweetsLoaded
+  onTweetsLoaded: tweetsLoad
 };
 
 const connectedTweetsPage = connect(mapStateToProps, mapDispatchToProps)(TweetsPage)

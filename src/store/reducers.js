@@ -7,11 +7,14 @@
 //    }
 // }
 
-import {  AUTH_LOGIN_REQUEST, AUTH_LOGIN_SUCCES, AUTH_LOGOUT, TWEETS_LOADED, UI_RESET_ERROR } from './types';
+import { AUTH_LOGIN_SUCCES, AUTH_LOGOUT, TWEETS_LOADED_SUCCES, UI_RESET_ERROR } from './types';
 
 const defaultState = {
   auth: false,
-  tweets: [],
+  tweets: {
+    areLoaded: false,
+    data: []
+  },
   ui: {
     isLoading: false,
     error: null
@@ -43,8 +46,8 @@ export function auth(state = defaultState.auth, action) {
 };
 
 export function tweets(state = defaultState.tweets, action) {
-    if(action.type === TWEETS_LOADED) {
-        return action.payload;
+    if(action.type === TWEETS_LOADED_SUCCES) {
+        return { areLoaded: true, data: action.payload };
     };
     return state;
 };
