@@ -1,5 +1,5 @@
 import { areTweetsLoaded, getTweet } from "./selectors";
-import { AUTH_LOGIN_FAILURE, AUTH_LOGIN_REQUEST, AUTH_LOGIN_SUCCES, AUTH_LOGOUT,  TWEETS_LOADED_FAILURE, TWEETS_LOADED_REQUEST, TWEETS_LOADED_SUCCES, TWEET_LOADED_REQUEST, TWEET_LOADED_SUCCES, TWEET_LOADED_FAILURE, UI_RESET_ERROR } from "./types";
+import { AUTH_LOGIN_FAILURE, AUTH_LOGIN_REQUEST, AUTH_LOGIN_SUCCES, AUTH_LOGOUT,  TWEETS_LOADED_FAILURE, TWEETS_LOADED_REQUEST, TWEETS_LOADED_SUCCES, TWEET_LOADED_REQUEST, TWEET_LOADED_SUCCES, TWEET_LOADED_FAILURE,TWEET_CREATED_REQUEST, TWEET_CREATED_SUCCES, TWEET_CREATED_FAILURE, UI_RESET_ERROR } from "./types";
 
 export const authLoginRequest = () => ({
     type: AUTH_LOGIN_REQUEST,
@@ -97,6 +97,36 @@ export const tweetLoad = (tweetId) => {
             throw error
         };
     };
+};
+
+export const tweetCreatedRequest = () => ({
+    type: TWEET_CREATED_REQUEST
+});
+
+export const tweetCreatedSucces = (tweet) => ({
+    type: TWEET_CREATED_SUCCES,
+    payload: tweet
+});
+
+export const tweetCreatedFailure = (error) => ({
+    type: TWEET_CREATED_FAILURE,
+    payload: error,
+    error: true,
+});
+
+export const tweetCreate = tweet => {
+    return async function(dispatch, getState, { api }) {
+        try {
+            dispatch(tweetCreatedRequest());
+            const {id} = await api.tweets.createTweet(tweet)
+            const createdTweet =await api.tweets.getTweetDetail(id);
+            dispatch(tweetCreatedSucces(createdTweet))
+            return createdTweet;
+        } catch (error) {
+            dispatch(tweetCreatedFailure(error));
+            throw error;
+        }
+    }
 }
 
 export const uiResetError = () => ({

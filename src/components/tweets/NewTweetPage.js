@@ -5,13 +5,15 @@ import Button from '../common/Button';
 
 import './NewTweetPage.css';
 import { useEffect, useRef, useState } from 'react';
-import { createTweet } from './service';
 import { useNavigate } from 'react-router-dom';
+import { useDispatch } from 'react-redux';
+import { tweetCreate } from '../../store/actions';
 
 const MAX_CHARACTERS = 280;
 const MIN_CHARACTERS = 5;
 
 const NewTweetPage = () => {
+  const dispatch = useDispatch()
   const [content, setContent] = useState('');
   const navigate = useNavigate();
   const textareaRef = useRef();
@@ -31,7 +33,8 @@ const NewTweetPage = () => {
     event.preventDefault();
 
     try {
-      const createdTweet = await createTweet({ content });
+      const createdTweet = await dispatch(tweetCreate({content}));
+
       navigate(`/tweets/${createdTweet.id}`);
     } catch (error) {
       if (error.status === 401) {
