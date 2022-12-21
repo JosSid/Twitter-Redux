@@ -26,9 +26,9 @@ const logger = store => next => action => {
     return result;
 }
 
-const middlewares = [thunk.withExtraArgument({api: {auth,tweets}}), logger];
 
-export default function configureStore (preloadedState) {
+export default function configureStore (preloadedState, {router}) {
+    const middlewares = [thunk.withExtraArgument({api: {auth,tweets}, router}), logger];
     const store = createStore(reducer, preloadedState,   composeWithDevTools(applyMiddleware(...middlewares)));
 
     return store;

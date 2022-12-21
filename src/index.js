@@ -1,5 +1,6 @@
 import React from 'react';
 import ReactDOM from 'react-dom/client';
+import { createBrowserRouter } from 'react-router-dom';
 
 import './index.css';
 import App from './App';
@@ -13,13 +14,15 @@ import Root from './Root';
 const accessToken = storage.get('auth');
 setAuthorizationHeader(accessToken);
 
-const store = configureStore({ auth: !!accessToken });
+const router = createBrowserRouter([{
+  path: '*', element: <App />
+}]);
+
+const store = configureStore({ auth: !!accessToken }, {router});
 
 const root = ReactDOM.createRoot(document.getElementById('root'));
 root.render(
   <React.StrictMode>
-    <Root store={store}>
-        <App />
-    </Root>
+    <Root store={store} router={router}/>
   </React.StrictMode>
 );

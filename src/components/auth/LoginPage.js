@@ -1,5 +1,5 @@
 import { useMemo, useState } from 'react';
-import { useLocation, useNavigate } from 'react-router-dom';
+
 import Button from '../common/Button';
 import FormField from '../common/FormField';
 
@@ -12,8 +12,7 @@ import { getUi } from '../../store/selectors';
 const LoginPage = () => {
   const [username, setUsername] = useState('');
   const [password, setPassword] = useState('');
-  const location = useLocation();
-  const navigate = useNavigate();
+
   const dispatch = useDispatch();
   const { isLoading, error } = useSelector(getUi);
 
@@ -21,13 +20,11 @@ const LoginPage = () => {
   const handleChangePassword = event => setPassword(event.target.value);
   const handleResetError = () => dispatch(uiResetError())
 
-  const handleSubmit = async event => {
+  const handleSubmit = event => {
     event.preventDefault();
 
    dispatch(authLogin({username, password})).then(() => {
-    const to = location.state?.from?.pathname || '/';
-
-    navigate(to, { replace: true });
+    
    });
 
   } 

@@ -5,7 +5,7 @@ import Button from '../common/Button';
 import { getUi } from '../../store/selectors';
 import './NewTweetPage.css';
 import { useEffect, useRef, useState } from 'react';
-import { useNavigate } from 'react-router-dom';
+
 import { useDispatch, useSelector } from 'react-redux';
 import { tweetCreate } from '../../store/actions';
 
@@ -16,7 +16,7 @@ const NewTweetPage = () => {
   const dispatch = useDispatch();
   const { isLoading } = useSelector(getUi)
   const [content, setContent] = useState('');
-  const navigate = useNavigate();
+  
   const textareaRef = useRef();
   const rendersRef = useRef(0);
 
@@ -30,18 +30,11 @@ const NewTweetPage = () => {
 
   const handleChange = event => setContent(event.target.value);
 
-  const handleSubmit = async event => {
+  const handleSubmit = event => {
     event.preventDefault();
 
-    try {
-      const createdTweet = await dispatch(tweetCreate({content}));
+    dispatch(tweetCreate({content}));
 
-      navigate(`/tweets/${createdTweet.id}`);
-    } catch (error) {
-      if (error.status === 401) {
-        navigate('/login');
-      }
-    }
   };
 
   const characters = `${content.length} / ${MAX_CHARACTERS}`;
