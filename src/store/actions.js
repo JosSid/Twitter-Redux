@@ -112,9 +112,7 @@ export const tweetLoad = (tweetId) => {
       const tweet = await api.tweets.getTweetDetail(tweetId);
       dispatch(tweetLoadedSucces(tweet));
     } catch (error) {
-      dispatch(tweetLoadedFailure(error));if (error.status === 404) {
-        router.navigate('/404');
-      }
+      dispatch(tweetLoadedFailure(error));
       
     }
   };
@@ -146,9 +144,7 @@ export const tweetCreate = (tweet) => {
       return createdTweet;
     } catch (error) {
       dispatch(tweetCreatedFailure(error));
-      if (error.status === 401) {
-        router.navigate('/login');
-      }
+
       throw error;
     }
   };

@@ -24,11 +24,28 @@ const logger = store => next => action => {
     console.log('next state', store.getState());
     console.groupEnd();
     return result;
+};
+
+const failuredRedirections = (router, redirections) => store => next => action => {
+    const result = next(action);
+
+    if(action.error){
+        
+        const redirection = redirections[action.payload.status]
+        if(redirection){
+            router.navigate(redirection);
+        }
+    }
+    
+    return result;
 }
 
 
 export default function configureStore (preloadedState, {router}) {
-    const middlewares = [thunk.withExtraArgument({api: {auth,tweets}, router}), logger];
+    const middlewares = [thunk.withExtraArgument({api: {auth,tweets}, router}), failuredRedirections(router, {
+        401: '/login',
+        404: '/404'
+    }), logger];
     const store = createStore(reducer, preloadedState,   composeWithDevTools(applyMiddleware(...middlewares)));
 
     return store;
